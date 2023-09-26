@@ -40,10 +40,10 @@ ENV PYTHONPATH=$PYTHONPATH:/models/research/slim
 ENV PYTHONPATH=$PYTHONPATH:/models/research
 
 # clone the flask application
-RUN git clone https://git-codecommit.us-west-2.amazonaws.com/v1/repos/vnm-image-detection
+RUN git clone https://github.com/TrinhVox/tf-od-api-rcnn.git/
 
 # set this as the working directory
-WORKDIR /Tensorflow-2-Object-Detection-API-Flask-Application
+WORKDIR /tf-od-api-rcnn
 
 # download the pretrained model
 # change here to download your pretrained model

@@ -31,7 +31,16 @@ def post_image(img_path, URL):
     return response
 
 def parse_response(response):
-    return json.loads(response.text)
+    response = json.loads(response.text)
+    detections = response["detections"]
+    detected_people = []
+    person_count = 0
+    for item in detections:
+        for key in item:
+            if key == "person" and item[key] >= '90%':
+                detected_people.append(item)
+                person_count +=1
+    return response, detected_people, person_count 
 
 def write_image(save_dir, parsed_response):
     if not os.path.exists(save_dir):
@@ -45,10 +54,11 @@ if __name__ == "__main__":
     args = parse_args()
     url = args.address + '/object_detection'
     response = post_image(args.image_path, url)
-    parsed_response = parse_response(response)
+    parsed_response, detected_people, people_count = parse_response(response)
 
-    print("detections are: ", parsed_response["detections"])
-    print("the image size is: ", parsed_response["image size"])
+    print("number of people detected:", people_count)
+    print("detections are:", detected_people)
+    print("the image size is:", parsed_response["image size"])
 
     write_image(args.output_dir, parsed_response)
     
